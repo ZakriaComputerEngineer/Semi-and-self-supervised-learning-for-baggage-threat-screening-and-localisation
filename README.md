@@ -10,9 +10,8 @@
 
 This repository implements a full training pipeline for **semi-supervised and self-supervised learning** approaches in the context of **X-ray baggage threat segmentation** using ViT-based architectures. It supports both pretext (reconstruction) and downstream (segmentation) tasks and is designed for **reproducibility** and **research extensibility**.
 
-  - Self-supervised pretraining via image reconstruction
-  - Downstream segmentation task for threat detection
-  - Semi-supervised learning approaches
+  - upstream pretext task: pretraining via image reconstruction
+  - Downstream segmentation task: training by segmenting mask for threat localization
 
 ---
 
@@ -26,7 +25,7 @@ Vision Transformer Architecture
 
 Training Approaches
   - Pretext task training (self-supervised)
-  - Supervised segmentation
+  - Supervised segmentation (you can also train it as a simple VIT-AE for your data
   - Transfer learning from pretext to downstream tasks
 
 Advanced Training Features
@@ -50,6 +49,7 @@ Advanced Training Features
 ├── Configs/
 │   ├── configs.py             # Configuration files
 │   └── model_configs.py
+│   └── arg_parser.py
 ├── Dataset/
 │   └── Dataloader.py          # Data loading utilities
 ├── NN/
@@ -98,6 +98,28 @@ Advanced Training Features
     .
     .
 ````
+## Data Augmentation present in dataloader class
+
+- 4 axis rotation [45,135,225,315]
+- flips [horizontal, vertical]
+- scales [zoom in, zoom out]
+- shifts [right, left]
+
+Constants:
+- resolution: 768x576
+- cv2 copy border
+- mask normalization
+
+---
+
+## Options
+
+1) Loss function
+2) Optimizer
+3) Reconstruction/Segmentation head
+4) activation
+
+*please go through the arg_parser file and select desired type, reconstruction/segmentation head is selection is available in model_configs file!*
 
 ---
 
@@ -114,6 +136,22 @@ Advanced Training Features
 ## Testing commands
 
 ```python test.py --pretrained_path "path to your complete trainined model"  --root_dir "path to your data root directory""```
+
+---
+
+## Results
+
+*Segmentation results*
+![collage_results](https://github.com/user-attachments/assets/64eb3605-94a8-4d0e-9598-fca695ed1d9f)
+
+*Reconstruction results*
+![recon_result](https://github.com/user-attachments/assets/4dfcba34-408e-45bd-a9e5-3bfdee8ea0bd)
+
+*Data Augmentation sample*
+![image_augmentation](https://github.com/user-attachments/assets/be9bcfc0-3efe-47b2-89d2-dd3e6063b6a7)
+
+*Training curve*
+![train_val_self-supervised](https://github.com/user-attachments/assets/68ead744-9c60-4bc8-b3a7-ff89883d616f)
 
 ---
 
